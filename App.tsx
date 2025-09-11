@@ -1,26 +1,32 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-// Import screens
+import { Provider, useSelector } from 'react-redux';
+import { store, RootState } from './src/redux/store';
+import './global.css'; 
 import DashboardScreen from './src/screens/DashboardScreen';
 import MapScreen from './src/screens/MapScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import DeviceListScreen from './src/screens/DeviceListScreen';
+import LoginScreen from './src/screens/LoginScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-function App() {
+function MainApp() {
+  const token = useSelector((state: RootState) => state.user.token);
+
   useEffect(() => {
     SplashScreen.hide();
   }, []);
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
+    <NavigationContainer>
+      {token ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
@@ -36,10 +42,11 @@ function App() {
                 iconName = 'list';
               }
 
-              return <Icon name={iconName} size={size} color={color} />;
+              return <Icon name={iconName as string} size={size} color={color} />;
             },
-            tabBarActiveTintColor: 'tomato',
+            tabBarActiveTintColor: '#3b82f6',
             tabBarInactiveTintColor: 'gray',
+            headerShown: false,
           })}
         >
           <Tab.Screen name="Dashboard" component={DashboardScreen} />
@@ -47,8 +54,22 @@ function App() {
           <Tab.Screen name="Map" component={MapScreen} />
           <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+      ) : (
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      )}
+    </NavigationContainer>
+  );
+}
+
+function App() {
+  return (
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <MainApp />
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 
