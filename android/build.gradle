@@ -17,6 +17,11 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
+    configurations.all {
+        resolutionStrategy {
+            force 'com.android.tools.build:gradle:8.8.0'
+        }
+    }
 }
 
 allprojects {

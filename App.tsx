@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Provider, useSelector } from 'react-redux';
 import { store, RootState } from './src/redux/store';
-import './global.css'; 
+import './global.css';
 import DashboardScreen from './src/screens/DashboardScreen';
 import MapScreen from './src/screens/MapScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -42,7 +43,9 @@ function MainApp() {
                 iconName = 'list';
               }
 
-              return <Icon name={iconName as string} size={size} color={color} />;
+              return (
+                <Icon name={iconName as string} size={size} color={color} />
+              );
             },
             tabBarActiveTintColor: '#3b82f6',
             tabBarInactiveTintColor: 'gray',
@@ -56,7 +59,11 @@ function MainApp() {
         </Tab.Navigator>
       ) : (
         <Stack.Navigator>
-          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       )}
     </NavigationContainer>
@@ -66,9 +73,11 @@ function MainApp() {
 function App() {
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <MainApp />
-      </SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider>
+          <MainApp />
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
     </Provider>
   );
 }

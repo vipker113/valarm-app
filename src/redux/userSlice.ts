@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
-  user: { email: string; name: string } | null;
+  user: any | null;
   token: string | null;
 }
 
@@ -14,9 +14,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginSuccess(state, action: PayloadAction<{ user: { email: string; name: string }; token: string }>) {
-      state.user = action.payload.user;
+    loginSuccess(state, action: PayloadAction<{ token: string }>) {
       state.token = action.payload.token;
+    },
+    setUser(state, action: PayloadAction<any>) {
+      state.user = action.payload;
     },
     logout(state) {
       state.user = null;
@@ -25,5 +27,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logout } = userSlice.actions;
+export const { loginSuccess, setUser, logout } = userSlice.actions;
 export default userSlice.reducer;

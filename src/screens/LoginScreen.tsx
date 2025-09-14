@@ -6,21 +6,36 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../redux/userSlice';
+import { loginSuccess, setUser } from '../redux/userSlice';
 import { AppDispatch } from '../redux/store';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+// import api from '../services/api';
 
 function LoginScreen() {
   const dispatch = useDispatch<AppDispatch>();
-  const [email, setEmail] = useState('test@example.com');
-  const [password, setPassword] = useState('password');
+  const [code, setCode] = useState(__DEV__ ? 'DEV-COM-2025-JY3AG3BJ' : '');
+  const [username, setUsername] = useState(__DEV__ ? 'company@gmail.com' : '');
+  const [password, setPassword] = useState(__DEV__ ? '49ud6[:m!JuS' : '');
 
-  const handleLogin = () => {
-    const dummyUser = { name: 'John Doe', email };
-    const dummyToken = 'fake-jwt-token';
-    dispatch(loginSuccess({ user: dummyUser, token: dummyToken }));
+  const handleLogin = async () => {
+    try {
+      //  const loginResponse = await api.post('/company/auth/login', {
+      //    code,
+      //    username,
+      //    password,
+      //  });
+      //  const { access_token } = loginResponse.data.data;
+      //  dispatch(loginSuccess({ token: access_token }));
+      //  const profileResponse = await api.get('/company/auth/profile');
+      //  dispatch(setUser(profileResponse.data.data));
+      dispatch(loginSuccess({ token: 'mock-token' }));
+      dispatch(setUser({ name: 'Mock User' }));
+    } catch (error) {
+      Alert.alert('Login Failed', 'Invalid credentials');
+    }
   };
 
   return (
@@ -38,13 +53,23 @@ function LoginScreen() {
         </View>
 
         <View className="mb-4">
-          <Text className="text-gray-600 mb-2">Email</Text>
+          <Text className="text-gray-600 mb-2">Code</Text>
           <TextInput
             className="w-full bg-white p-4 rounded-lg shadow-sm"
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
+            placeholder="Enter your code"
+            value={code}
+            onChangeText={setCode}
+            autoCapitalize="none"
+          />
+        </View>
+
+        <View className="mb-4">
+          <Text className="text-gray-600 mb-2">Username</Text>
+          <TextInput
+            className="w-full bg-white p-4 rounded-lg shadow-sm"
+            placeholder="Enter your username"
+            value={username}
+            onChangeText={setUsername}
             autoCapitalize="none"
           />
         </View>
