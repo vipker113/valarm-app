@@ -18,8 +18,11 @@ import LoginScreen from './src/screens/LoginScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+import FullScreenLoading from './src/components/ui/FullScreenLoading';
+
 function MainApp() {
   const token = useSelector((state: RootState) => state.user.token);
+  const isLoading = useSelector((state: RootState) => state.loading.isLoading);
 
   useEffect(() => {
     SplashScreen.hide();
@@ -66,6 +69,7 @@ function MainApp() {
           />
         </Stack.Navigator>
       )}
+      <FullScreenLoading visible={isLoading} />
     </NavigationContainer>
   );
 }
