@@ -14,11 +14,15 @@ import MapScreen from './src/screens/MapScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import DeviceListScreen from './src/screens/DeviceListScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import FullScreenLoading from './src/components/ui/FullScreenLoading';
+import {
+  getFcmToken,
+  notificationListener,
+  requestUserPermission,
+} from './src/services/notificationService';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-import FullScreenLoading from './src/components/ui/FullScreenLoading';
 
 function MainApp() {
   const token = useSelector((state: RootState) => state.user.token);
@@ -26,6 +30,14 @@ function MainApp() {
 
   useEffect(() => {
     SplashScreen.hide();
+
+    const setupNotifications = async () => {
+      await requestUserPermission();
+      await getFcmToken();
+      notificationListener();
+    };
+
+    setupNotifications();
   }, []);
 
   return (

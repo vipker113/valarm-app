@@ -13,8 +13,8 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import { BlurView } from '@react-native-community/blur';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { DeviceStatus, DeviceType } from '../types/enum';
-import StatusFilter from '../components/StatusFilter';
+import { DeviceStatus, DeviceType } from '../types/devices/enum';
+import StatusFilter from '../components/ui/StatusFilter';
 
 const { width, height } = Dimensions.get('window');
 const DRAWER_WIDTH = width * 0.55;
@@ -205,7 +205,7 @@ export default function MapScreen() {
         ))}
       </MapView>
 
-      <View className="absolute top-10 left-3 right-3 bg-white rounded-xl p-2 shadow-md">
+      <View className="absolute top-4 left-3 right-3 bg-white rounded-xl p-2 shadow-md">
         <View className="flex-row items-center">
           <TouchableOpacity
             onPress={() => (drawerOpen ? closeDrawer() : openDrawer())}
