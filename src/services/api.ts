@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { store } from '../redux/store';
 import {
+  ApiResponse,
   DeviceHistoryListResponse,
   DeviceListResponse,
   TDevice,
@@ -20,20 +21,23 @@ api.interceptors.request.use(config => {
 
 export const deviceApi = {
   getDevices: (params: { page: number; limit: number }) =>
-    api.get<DeviceListResponse>('/devices', { params }),
+    api.get<DeviceListResponse>('devices', { params }),
 
-  createDevice: (data: Partial<TDevice>) => api.post<TDevice>('/devices', data),
+  getMapDevices: (params: { page: number; limit: number }) =>
+    api.get<ApiResponse<DeviceListResponse>>('company/map/devices', { params }),
+
+  createDevice: (data: Partial<TDevice>) => api.post<TDevice>('devices', data),
 
   updateDevice: (id: string, data: Partial<TDevice>) =>
-    api.put<TDevice>(`/devices/${id}`, data),
+    api.put<TDevice>(`devices/${id}`, data),
 
-  deleteDevice: (id: string) => api.delete(`/devices/${id}`),
+  deleteDevice: (id: string) => api.delete(`devices/${id}`),
 
   getDeviceHistory: (
     deviceId: string,
     params: { page: number; limit: number },
   ) =>
-    api.get<DeviceHistoryListResponse>(`/devices/${deviceId}/history`, {
+    api.get<DeviceHistoryListResponse>(`devices/${deviceId}/history`, {
       params,
     }),
 };

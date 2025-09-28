@@ -19,11 +19,9 @@ import { showLoading, hideLoading } from '../redux/loadingSlice';
 
 function LoginScreen() {
   const dispatch = useDispatch<AppDispatch>();
-  const [code, setCode] = useState(__DEV__ ? 'DEV-COM-2025-3RWWSPTC ' : '');
-  const [username, setUsername] = useState(
-    __DEV__ ? 'congtyb@example.com' : '',
-  );
-  const [password, setPassword] = useState(__DEV__ ? 'G4<&aJ^w7AWl' : '');
+  const [code, setCode] = useState(__DEV__ ? 'DEV-COM-2025-JY3AG3BJ' : '');
+  const [username, setUsername] = useState(__DEV__ ? 'company@gmail.com' : '');
+  const [password, setPassword] = useState(__DEV__ ? 'Admin@123' : '');
 
   const handleLogin = async () => {
     dispatch(showLoading());
