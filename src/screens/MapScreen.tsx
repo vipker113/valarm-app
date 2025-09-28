@@ -13,11 +13,12 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import { BlurView } from '@react-native-community/blur';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { DeviceStatus, DeviceType } from '../types/devices/enum';
+import { DeviceStatus } from '../types/devices/enum';
 import StatusFilter from '../components/ui/StatusFilter';
 import { deviceApi } from '../services/api';
 import { TDevice } from '../types/devices/device';
 import FullScreenLoading from '../components/ui/FullScreenLoading';
+import DeviceItem from '../components/ui/DeviceItem';
 
 const { width, height } = Dimensions.get('window');
 const DRAWER_WIDTH = width * 0.55;
@@ -140,34 +141,6 @@ export default function MapScreen() {
     }).start(() => setDrawerOpen(false));
   };
 
-  const renderDeviceIcon = (type: DeviceType) => {
-    switch (type) {
-      case DeviceType.CAMERA:
-        return <Icon name="video-outline" size={20} color="#374151" />;
-      case DeviceType.ALARM:
-        return <Icon name="alarm-light-outline" size={20} color="#374151" />;
-      case DeviceType.RECORDER:
-        return <Icon name="microphone-outline" size={20} color="#374151" />;
-      default:
-        return <Icon name="help-circle-outline" size={20} color="#374151" />;
-    }
-  };
-
-  const renderBatteryIcon = (battery?: number) => {
-    if (battery === undefined) return null;
-    if (battery > 50) return <Icon name="battery" size={18} color="green" />;
-    if (battery > 20)
-      return <Icon name="battery-medium" size={18} color="orange" />;
-    return <Icon name="battery-alert" size={18} color="red" />;
-  };
-
-  const renderSignalIcon = (signal?: number) => {
-    if (signal === undefined) return null;
-    if (signal > -70) return <Icon name="wifi" size={18} color="green" />;
-    if (signal > -85) return <Icon name="wifi" size={18} color="orange" />;
-    return <Icon name="wifi-off" size={18} color="red" />;
-  };
-
   return (
     <View className="flex-1 bg-white" {...panResponder.panHandlers}>
       {loading ? (
@@ -277,32 +250,10 @@ export default function MapScreen() {
               data={filteredDevices}
               keyExtractor={item => item.id}
               renderItem={({ item }) => (
-                <TouchableOpacity
+                <DeviceItem
+                  device={item}
                   onPress={() => handleSelectDevice(item)}
-                  className={`flex-row items-center justify-between px-3 py-2 border-b border-gray-100 ${
-                    selected?.id === item.id ? 'bg-indigo-50' : ''
-                  }`}
-                >
-                  <View className="flex-row items-center space-x-2">
-                    {renderDeviceIcon(item.deviceType)}
-                    <View>
-                      <Text className="font-semibold text-sm">{item.name}</Text>
-                      <Text
-                        className={`text-xs ${
-                          item.status === DeviceStatus.ACTIVE
-                            ? 'text-green-600'
-                            : 'text-gray-500'
-                        }`}
-                      >
-                        {item.status}
-                      </Text>
-                    </View>
-                  </View>
-                  <View className="flex-row items-center space-x-2">
-                    {renderSignalIcon(item.signalStrength)}
-                    {renderBatteryIcon(item.battery)}
-                  </View>
-                </TouchableOpacity>
+                />
               )}
             />
           </Animated.View>
